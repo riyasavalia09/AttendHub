@@ -1,0 +1,88 @@
+/*
+  UI Glass Overlay
+  Non-invasive “polish layer” that adds glass/blur/border/hover consistency
+  without changing the existing palette / theme colors.
+*/
+
+:root {
+    --ui-glass-radius: 16px;
+    --ui-glass-blur: 18px;
+    --ui-glass-border: rgba(255, 255, 255, 0.18);
+    --ui-glass-border-strong: rgba(255, 255, 255, 0.28);
+    --ui-glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    --ui-glass-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.22);
+    --ui-motion: 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --ui-motion: 0ms;
+    }
+}
+
+/* Card-like surfaces */
+.ui-glass-surface,
+.glass,
+.glass-card,
+.card,
+.card-academic,
+.stat-card,
+.table-responsive,
+.table-academic,
+.modal-content {
+    border-radius: var(--ui-glass-radius);
+    border: 1px solid var(--ui-glass-border);
+    box-shadow: var(--ui-glass-shadow);
+    transition: transform var(--ui-motion), box-shadow var(--ui-motion), border-color var(--ui-motion);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .ui-glass-surface,
+    .glass,
+    .glass-card,
+    .card,
+    .card-academic,
+    .stat-card,
+    .table-responsive,
+    .table-academic,
+    .modal-content {
+        -webkit-backdrop-filter: blur(var(--ui-glass-blur));
+        backdrop-filter: blur(var(--ui-glass-blur));
+    }
+}
+
+.card:hover,
+.card-academic:hover,
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--ui-glass-shadow-hover);
+    border-color: var(--ui-glass-border-strong);
+}
+
+/* Sidebar + navbar: keep geometry unchanged, add subtle glass behavior */
+#sidebar-wrapper,
+.sidebar,
+.navbar,
+.navbar-academic {
+    border-color: var(--ui-glass-border);
+    transition: border-color var(--ui-motion), box-shadow var(--ui-motion);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    #sidebar-wrapper,
+    .sidebar,
+    .navbar,
+    .navbar-academic {
+        -webkit-backdrop-filter: blur(calc(var(--ui-glass-blur) + 2px));
+        backdrop-filter: blur(calc(var(--ui-glass-blur) + 2px));
+    }
+}
+
+/* Tables: subtle hover overlay (keeps palette; only neutral alpha) */
+.table-hover tbody tr {
+    transition: background-color var(--ui-motion);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.025);
+}

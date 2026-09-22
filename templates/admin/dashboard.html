@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | AttendHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard_glass.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ui_glass_overlay.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-academic fixed-top">
+        <div class="container-fluid">
+            <button class="btn me-3" id="menu-toggle" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-clipboard-check me-2"></i>AttendHub
+            </a>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item me-2">
+                        <button class="btn btn-sm btn-action" id="themeToggle" type="button" aria-pressed="false">
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                    <li id="notificationsNavItem" class="nav-item dropdown me-3">
+                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell fs-5"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 300px;">
+                            <li><h6 class="dropdown-header">Notifications</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="px-3 py-2 text-muted small">No notifications</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item me-3 d-flex align-items-center">
+                        <a href="/admin/university-profile" class="d-flex align-items-center text-decoration-none">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px; background: rgba(57,214,200,0.12); border: 1px solid rgba(57,214,200,0.25);">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <strong id="navbarAdminName">Admin</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-action" id="logoutBtn" type="button">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">Main Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="/admin/dashboard" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/admin/university-profile" class="list-group-item list-group-item-action">
+                    <i class="fas fa-school"></i> University Profile
+                </a>
+                <a href="/admin/faculty" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chalkboard-teacher"></i> Faculty Management
+                </a>
+                <a href="/admin/students" class="list-group-item list-group-item-action">
+                    <i class="fas fa-user-graduate"></i> Student Management
+                </a>
+                <a href="/admin/timetable" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-alt"></i> Timetable Management
+                </a>
+                <a href="/admin/analysis" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-column"></i> Analysis
+                </a>
+                <div class="sidebar-heading mt-3">Settings</div>
+                <a href="/admin/plan" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tags"></i> Plan & Subscription
+                </a>
+                <a href="/admin/system-config" class="list-group-item list-group-item-action">
+                    <i class="fas fa-cogs"></i> System Configuration
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid p-4">
+                
+                <!-- Welcome Section -->
+                <div class="d-flex justify-content-between align-items-center mb-4 text-white">
+                    <div>
+                        <h2 class="h4 mb-0 fw-bold">Dashboard Overview</h2>
+                        <p class="mb-0 small opacity-75">University: <span id="dashboardUniversityName">—</span> (ID: <span id="dashboardUniversityId">—</span>)</p>
+                    </div>
+                    <div class="text-end">
+                        <span id="dashboardSystemStatusBadge" class="badge bg-success"><i class="fas fa-check-circle me-1"></i> System Active</span>
+                        <span id="dashboardPlanBadge" class="badge bg-info text-dark ms-2"><i class="fas fa-star me-1"></i> Free License</span>
+                    </div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="card-academic stat-card p-3" style="--stat-accent-rgb: 108, 177, 218;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="stat-label">Total Faculty</div>
+                                    <div class="stat-value" id="totalFacultyCount">--</div>
+                                </div>
+                                <i class="fas fa-chalkboard-teacher text-muted fa-2x opacity-25"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card-academic stat-card p-3" style="border-left-color: #28a745; --stat-accent-rgb: 40, 167, 69;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="stat-label">Total Students</div>
+                                    <div class="stat-value" id="totalStudentCount">--</div>
+                                </div>
+                                <i class="fas fa-user-graduate text-muted fa-2x opacity-25"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card-academic stat-card p-3" style="border-left-color: #ffc107; --stat-accent-rgb: 255, 193, 7;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="stat-label">Active Timetables</div>
+                                    <div class="stat-value" id="activeTimetableCount">--</div>
+                                </div>
+                                <i class="fas fa-calendar-check text-muted fa-2x opacity-25"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card-academic stat-card p-3" style="border-left-color: #dc3545; --stat-accent-rgb: 220, 53, 69;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="stat-label">Lectures Today</div>
+                                    <div class="stat-value" id="lecturesTodayCount">--</div>
+                                </div>
+                                <i class="fas fa-clock text-muted fa-2x opacity-25"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <h5 class="text-white mb-3 fw-light">Quick Actions</h5>
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3 col-6">
+                        <a href="/admin/faculty" class="btn btn-action w-100 text-decoration-none d-flex flex-column align-items-center justify-content-center py-3">
+                            <i class="fas fa-plus-circle fa-lg mb-2"></i> Add Faculty
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <a href="/admin/students" class="btn btn-action w-100 text-decoration-none d-flex flex-column align-items-center justify-content-center py-3">
+                            <i class="fas fa-user-plus fa-lg mb-2"></i> Add Student
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <a href="/admin/timetable" class="btn btn-action w-100 text-decoration-none d-flex flex-column align-items-center justify-content-center py-3">
+                            <i class="fas fa-file-upload fa-lg mb-2"></i> Upload Timetable
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <a href="/admin/reports" class="btn btn-action w-100 text-decoration-none d-flex flex-column align-items-center justify-content-center py-3">
+                            <i class="fas fa-chart-pie fa-lg mb-2"></i> View Reports
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Activity & Status -->
+                <div class="row g-4">
+                    <!-- Recent Activity Table -->
+                    <div class="col-lg-12">
+                        <div class="card-academic h-100">
+                            <div class="card-academic-header">
+                                <span><i class="fas fa-history me-2"></i>Recent System Activity</span>
+                                <button class="btn btn-sm btn-outline-primary">View All</button>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-academic table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="ps-4">Activity Description</th>
+                                                <th>Initiated By</th>
+                                                <th>Role</th>
+                                                <th>Timestamp</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recentActivityTableBody">
+                                            <tr>
+                                                <td class="ps-4">Attendance Marked (CS-301)</td>
+                                                <td>Prof. A. Sharma</td>
+                                                <td><span class="badge bg-secondary">Faculty</span></td>
+                                                <td class="text-muted small">Today, 10:05 AM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">New Student Registered (2024ME04)</td>
+                                                <td>System Admin</td>
+                                                <td><span class="badge bg-primary">Admin</span></td>
+                                                <td class="text-muted small">Today, 09:15 AM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">Faculty Account Approved</td>
+                                                <td>System Admin</td>
+                                                <td><span class="badge bg-primary">Admin</span></td>
+                                                <td class="text-muted small">Today, 08:45 AM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">Attendance Report Generated (CSE Dept)</td>
+                                                <td>Dr. R. Kumar</td>
+                                                <td><span class="badge bg-secondary">Faculty</span></td>
+                                                <td class="text-muted small">Yesterday, 05:20 PM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">Timetable Update (ME Dept)</td>
+                                                <td>HOD Mechanical</td>
+                                                <td><span class="badge bg-secondary">Faculty</span></td>
+                                                <td class="text-muted small">Yesterday, 04:30 PM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">Bulk Students Imported (ECE-2024)</td>
+                                                <td>System Admin</td>
+                                                <td><span class="badge bg-primary">Admin</span></td>
+                                                <td class="text-muted small">Yesterday, 02:15 PM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">Leave Application Submitted</td>
+                                                <td>Student ID: 2024CS012</td>
+                                                <td><span class="badge bg-info">Student</span></td>
+                                                <td class="text-muted small">Yesterday, 11:30 AM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">Course Material Uploaded (MA-201)</td>
+                                                <td>Prof. S. Patel</td>
+                                                <td><span class="badge bg-secondary">Faculty</span></td>
+                                                <td class="text-muted small">2 days ago, 03:45 PM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">Bulk Upload: 1st Year Students</td>
+                                                <td>System Admin</td>
+                                                <td><span class="badge bg-primary">Admin</span></td>
+                                                <td class="text-muted small">Yesterday, 02:15 PM</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='JS/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/glass_ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/admin_layout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/admin_dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/logout.js') }}"></script>
+</body>
+</html>

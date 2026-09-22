@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management | AttendHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard_glass.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ui_glass_overlay.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-academic fixed-top">
+        <div class="container-fluid">
+            <button class="btn me-3" id="menu-toggle" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-clipboard-check me-2"></i>AttendHub
+            </a>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item me-2">
+                        <button class="btn btn-sm btn-action" id="themeToggle" type="button" aria-pressed="false">
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                    <li id="notificationsNavItem" class="nav-item dropdown me-3">
+                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell fs-5"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 300px;">
+                            <li><h6 class="dropdown-header">Notifications</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="px-3 py-2 text-muted small">No notifications</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item me-3 d-flex align-items-center">
+                        <a href="/admin/university-profile" class="d-flex align-items-center text-decoration-none">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px; background: rgba(57,214,200,0.12); border: 1px solid rgba(57,214,200,0.25);">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <strong id="navbarAdminName">Admin</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-action" id="logoutBtn" type="button">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">Main Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="/admin/dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/admin/university-profile" class="list-group-item list-group-item-action">
+                    <i class="fas fa-school"></i> University Profile
+                </a>
+                <a href="/admin/faculty" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chalkboard-teacher"></i> Faculty Management
+                </a>
+                <a href="/admin/students" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-user-graduate"></i> Student Management
+                </a>
+                <a href="/admin/timetable" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-alt"></i> Timetable Management
+                </a>
+                <a href="/admin/analysis" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-column"></i> Analysis
+                </a>
+                <div class="sidebar-heading mt-3">Settings</div>
+                <a href="/admin/plan" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tags"></i> Plan & Subscription
+                </a>
+                <a href="/admin/system-config" class="list-group-item list-group-item-action">
+                    <i class="fas fa-cogs"></i> System Configuration
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="mini-profile">
+                    <div class="who">
+                        <div class="avatar" aria-hidden="true"><i class="fas fa-user-shield"></i></div>
+                        <div class="meta">
+                            <div class="name" id="sidebarAdminName">Admin</div>
+                            <div class="role">Administrator</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-action" id="sidebarLogoutBtn" type="button" aria-label="Logout">
+                        <i class="fas fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                
+                <!-- Action Bar -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="h4 mb-0 fw-bold">Student Management</h2>
+                        <p class="mb-0 small" style="color: var(--muted);">Control student registry and academic records</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <div class="input-group shadow-sm" style="width: 250px;">
+                            <span class="input-group-text"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" class="form-control" id="studentSearchInput" placeholder="Search students..." autocomplete="off">
+                        </div>
+                        <button class="btn btn-primary fw-bold shadow-sm" type="button" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                            <i class="fas fa-plus-circle me-2"></i>Add Student
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Student Table Card -->
+                <div class="card-academic p-0 overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-academic mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Enrollment No</th>
+                                    <th>Name</th>
+                                    <th>Department</th>
+                                    <th>Semester</th>
+                                    <th>Status</th>
+                                    <th class="text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody">
+                                <!-- Rows will be loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-user-plus me-2"></i>Add New Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="addStudentForm" novalidate>
+                        <input type="hidden" id="studentId" value="">
+                        <div class="mb-3">
+                            <label for="studentName" class="form-label small fw-bold text-muted">Full Name</label>
+                            <input type="text" class="form-control" id="studentName" placeholder="e.g. Aryan Sharma" required>
+                            <div class="invalid-feedback">Name is required</div>
+                        </div>
+                        
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="enrollmentNo" class="form-label small fw-bold text-muted">Enrollment No</label>
+                                <input type="text" class="form-control font-monospace" id="enrollmentNo" placeholder="2024CS..." required>
+                                <div class="invalid-feedback">Valid Enrollment No required</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="studentEmail" class="form-label small fw-bold text-muted">Email Address</label>
+                                <input type="email" class="form-control" id="studentEmail" placeholder="student@univ.edu" required>
+                                <div class="invalid-feedback">Valid email required</div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="department" class="form-label small fw-bold text-muted">Department</label>
+                                <select class="form-select" id="department" required>
+                                    <option value="" selected disabled>Choose...</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Mechanical Eng.">Mechanical Eng.</option>
+                                    <option value="Civil Eng.">Civil Eng.</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="Physics">Physics</option>
+                                </select>
+                                <div class="invalid-feedback">Select a department</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="semester" class="form-label small fw-bold text-muted">Semester</label>
+                                <select class="form-select" id="semester" required>
+                                    <option value="" selected disabled>Choose...</option>
+                                    <option>1st Sem</option>
+                                    <option>2nd Sem</option>
+                                    <option>3rd Sem</option>
+                                    <option>4th Sem</option>
+                                    <option>5th Sem</option>
+                                    <option>6th Sem</option>
+                                    <option>7th Sem</option>
+                                    <option>8th Sem</option>
+                                </select>
+                                <div class="invalid-feedback">Select a semester</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="studentPassword" class="form-label small fw-bold text-muted">Password</label>
+                            <input type="password" class="form-control" id="studentPassword" placeholder="Initial Password (min 6 chars)" required minlength="6">
+                            <div class="invalid-feedback">Password must be at least 6 characters</div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary fw-bold py-2">
+                                <i class="fas fa-save me-2"></i>Save Student
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='JS/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/glass_ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/admin_layout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/logout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/manage_students.js') }}"></script>
+
+    <script>
+        (function(){
+            var btn = document.getElementById('sidebarLogoutBtn');
+            var topBtn = document.getElementById('logoutBtn');
+            if (btn && topBtn) btn.addEventListener('click', function(){ topBtn.click(); });
+            var navName = document.getElementById('navbarAdminName');
+            var sideName = document.getElementById('sidebarAdminName');
+            if (navName && sideName) sideName.textContent = navName.textContent || 'Admin';
+        })();
+    </script>
+</body>
+</html>

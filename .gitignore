@@ -1,0 +1,44 @@
+# Python cache / compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# IDE / Editor files
+.vscode/
+.idea/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Testing / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Flask instance folder
+instance/
+
+# Generated uploads / runtime files
+uploads/

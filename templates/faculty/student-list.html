@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List | AttendHub Faculty</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard_glass.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ui_glass_overlay.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-academic fixed-top">
+        <div class="container-fluid">
+            <button class="btn me-3" id="menu-toggle" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chalkboard-teacher me-2"></i>AttendHub Faculty
+            </a>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item me-2">
+                        <button class="btn btn-sm btn-action" id="themeToggle" type="button" aria-pressed="false">
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item dropdown me-3" id="notificationsNavItem">
+                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell text-white fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 300px;">
+                            <li><h6 class="dropdown-header"><i class="fas fa-info-circle text-info me-2"></i>Notifications</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">
+                                <small class="text-muted">Attendance report for "Data Structures" is due by Friday.</small>
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item me-3 d-flex align-items-center">
+                        <a href="/faculty/profile" class="d-flex align-items-center text-decoration-none">
+                            <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                                <span id="navbarFacultyInitials" class="small fw-bold text-dark">F</span>
+                            </div>
+                            <strong id="navbarFacultyName">Faculty</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-action logout-action" type="button">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">Faculty Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="/faculty/dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/faculty/schedule" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-check"></i> My Schedule
+                </a>
+                <a href="/faculty/mark-attendance" class="list-group-item list-group-item-action">
+                    <i class="fas fa-user-check"></i> Take Attendance
+                </a>
+                <a href="/faculty/students" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-users"></i> Student List
+                </a>
+                <a href="/faculty/reports" class="list-group-item list-group-item-action">
+                    <i class="fas fa-history"></i> Attendance History
+                </a>
+                <a href="/faculty/analysis" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-column"></i> Analysis
+                </a>
+                <div class="sidebar-heading mt-3">Account</div>
+                <a href="/faculty/profile" class="list-group-item list-group-item-action">
+                    <i class="fas fa-user-circle"></i> My Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid p-4">
+                
+                <!-- Page Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="text-white">
+                        <h2 class="h4 mb-0 fw-bold">Student List</h2>
+                        <p class="mb-0 small opacity-75">Students in your university</p>
+                    </div>
+                    <button type="button" class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                        <i class="fas fa-plus-circle me-2"></i>Add Student
+                    </button>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="card-academic p-4 mb-4">
+                    <form class="row g-3 align-items-end" onsubmit="return false;">
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Department</label>
+                            <select class="form-select" id="departmentFilter">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Semester</label>
+                            <select class="form-select" id="semesterFilter">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Search Student</label>
+                            <input type="text" class="form-control" id="studentSearchInput" placeholder="Search by name, enrollment no, or email...">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Student List Table -->
+                <div class="card-academic p-4">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-academic align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Student Name</th>
+                                    <th>Enrollment No</th>
+                                    <th>Department</th>
+                                    <th>Semester</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- Student Profile Modal (Read-Only) -->
+    <div class="modal fade" id="studentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-user-graduate me-2 text-primary"></i>Student Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-2 border" style="width: 80px; height: 80px;">
+                            <span class="h2 fw-bold text-dark mb-0" id="studentModalInitials">?</span>
+                        </div>
+                        <h5 class="fw-bold mb-1" id="studentModalName">-</h5>
+                        <p class="text-muted small mb-1" id="studentModalIdLine">-</p>
+                        <span class="badge bg-secondary" id="studentModalStatus">-</span>
+                    </div>
+                    
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="small text-muted text-uppercase fw-bold">Enrollment No</label>
+                            <div class="fw-medium" id="studentModalEnrollment">-</div>
+                        </div>
+                        <div class="col-6">
+                            <label class="small text-muted text-uppercase fw-bold">Department</label>
+                            <div class="fw-medium" id="studentModalDepartment">-</div>
+                        </div>
+                        <div class="col-6">
+                            <label class="small text-muted text-uppercase fw-bold">Semester</label>
+                            <div class="fw-medium" id="studentModalSemester">-</div>
+                        </div>
+                        <div class="col-6">
+                            <label class="small text-muted text-uppercase fw-bold">Contact Email</label>
+                            <div class="fw-medium text-truncate" id="studentModalEmail">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-user-plus me-2 text-primary"></i>Add New Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="addStudentForm" novalidate>
+                        <div class="mb-3">
+                            <label for="studentName" class="form-label small fw-bold text-muted">Full Name</label>
+                            <input type="text" class="form-control" id="studentName" placeholder="e.g. Aryan Sharma" required>
+                            <div class="invalid-feedback">Name is required</div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="enrollmentNo" class="form-label small fw-bold text-muted">Enrollment No</label>
+                                <input type="text" class="form-control font-monospace" id="enrollmentNo" placeholder="2024CS..." required>
+                                <div class="invalid-feedback">Enrollment No is required</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="studentEmail" class="form-label small fw-bold text-muted">Email Address</label>
+                                <input type="email" class="form-control" id="studentEmail" placeholder="student@univ.edu" required>
+                                <div class="invalid-feedback">Valid email is required</div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="department" class="form-label small fw-bold text-muted">Department</label>
+                                <select class="form-select" id="department" required>
+                                    <option value="" selected disabled>Choose...</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Mechanical Eng.">Mechanical Eng.</option>
+                                    <option value="Civil Eng.">Civil Eng.</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="Physics">Physics</option>
+                                </select>
+                                <div class="invalid-feedback">Select a department</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="semester" class="form-label small fw-bold text-muted">Semester</label>
+                                <select class="form-select" id="semester" required>
+                                    <option value="" selected disabled>Choose...</option>
+                                    <option>1st Sem</option>
+                                    <option>2nd Sem</option>
+                                    <option>3rd Sem</option>
+                                    <option>4th Sem</option>
+                                    <option>5th Sem</option>
+                                    <option>6th Sem</option>
+                                    <option>7th Sem</option>
+                                    <option>8th Sem</option>
+                                </select>
+                                <div class="invalid-feedback">Select a semester</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="studentPassword" class="form-label small fw-bold text-muted">Password</label>
+                            <input type="password" class="form-control" id="studentPassword" placeholder="Initial Password (min 6 chars)" required minlength="6">
+                            <div class="invalid-feedback">Password must be at least 6 characters</div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary fw-bold py-2">
+                                <i class="fas fa-save me-2"></i>Save Student
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='JS/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/glass_ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/logout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/faculty_layout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/faculty_students.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+/*
+  Premium Panel Design System (Admin / Faculty / Student)
+  - Dark navy gradient background
+  - Glassmorphism surfaces (blur 18px, rgba)
+  - 16px radius
+  - Inter typography
+  - Neon edge glow for stat cards
+*/
+
+:root {
+    --primary-accent: #6CB1DA;
+    --secondary-accent: #D1ECFF;
+    --bg-gradient-start: #35577D;
+    --bg-gradient-end: #141E30;
+    --primary-accent-rgb: 108, 177, 218;
+
+    --panel-radius: 16px;
+    --panel-blur: 18px;
+    --panel-border: rgba(255, 255, 255, 0.26);
+    --panel-border-strong: rgba(255, 255, 255, 0.34);
+    --panel-shadow: 0 12px 34px rgba(0, 0, 0, 0.18);
+    --panel-shadow-hover: 0 18px 52px rgba(0, 0, 0, 0.22);
+
+    --panel-text: rgba(255, 255, 255, 0.92);
+    --panel-muted: rgba(255, 255, 255, 0.68);
+}
+
+body.panel {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-end));
+    overflow-x: hidden;
+    position: relative;
+}
+
+body.panel::before,
+body.panel::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.panel::before {
+    background:
+        radial-gradient(900px 400px at 18% 18%, rgba(108, 177, 218, 0.22), rgba(108, 177, 218, 0) 65%),
+        radial-gradient(900px 420px at 82% 14%, rgba(209, 236, 255, 0.14), rgba(209, 236, 255, 0) 60%);
+}
+
+body.panel::after {
+    background: radial-gradient(700px 460px at 60% 86%, rgba(108, 177, 218, 0.14), rgba(108, 177, 218, 0) 65%);
+}
+
+body.panel #wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+body.panel #sidebar-wrapper {
+    background: rgba(255, 255, 255, 0.78);
+    border-right: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 14px 46px rgba(0, 0, 0, 0.18);
+    -webkit-backdrop-filter: blur(var(--panel-blur));
+    backdrop-filter: blur(var(--panel-blur));
+}
+
+body.panel .navbar-academic {
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+}
+
+/* Glass card component */
+body.panel .card-academic {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.22));
+    border: 1px solid var(--panel-border);
+    border-radius: var(--panel-radius);
+    box-shadow: var(--panel-shadow);
+    position: relative;
+    overflow: hidden;
+    -webkit-backdrop-filter: blur(var(--panel-blur));
+    backdrop-filter: blur(var(--panel-blur));
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+body.panel .card-academic::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(900px 220px at 10% 0%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 65%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0) 40%);
+    opacity: 0.95;
+}
+
+body.panel .card-academic > * {
+    position: relative;
+    z-index: 1;
+}
+
+body.panel .card-academic:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--panel-shadow-hover);
+    border-color: var(--panel-border-strong);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.70), rgba(255, 255, 255, 0.26));
+}
+
+/* Headings on dark bg */
+body.panel .text-white,
+body.panel h1,
+body.panel h2,
+body.panel h3,
+body.panel h4,
+body.panel h5 {
+    color: var(--panel-text) !important;
+}
+
+body.panel .opacity-75 { color: var(--panel-muted) !important; }
+
+/* Stat cards: neon edge glow */
+body.panel .stat-card {
+    --stat-accent-rgb: var(--primary-accent-rgb);
+    border-left: 4px solid var(--primary-accent);
+}
+
+body.panel .stat-card::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    border-radius: var(--panel-radius);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.20),
+        0 14px 46px rgba(0, 0, 0, 0.18),
+        0 0 28px rgba(var(--stat-accent-rgb), 0.30);
+    opacity: 0.9;
+}
+
+body.panel .stat-value { color: rgba(0, 0, 0, 0.72); }
+body.panel .stat-label { color: rgba(0, 0, 0, 0.45); }
+
+/* Accent helpers (avoid inline styles) */
+.stat-accent-primary { border-left-color: var(--primary-accent) !important; --stat-accent-rgb: 108, 177, 218; }
+.stat-accent-success { border-left-color: #28a745 !important; --stat-accent-rgb: 40, 167, 69; }
+.stat-accent-warning { border-left-color: #ffc107 !important; --stat-accent-rgb: 255, 193, 7; }
+.stat-accent-danger { border-left-color: #dc3545 !important; --stat-accent-rgb: 220, 53, 69; }
+
+/* Notifications dropdown + badge (avoid inline styles) */
+.dropdown-menu-notifications { min-width: 300px; }
+.notif-badge { font-size: 0.65rem; }
+
+/* Avatar sizing helpers */
+.avatar-35 { width: 35px; height: 35px; }
+.avatar-80 { width: 80px; height: 80px; }
+
+/* Chart height helpers */
+.h-220 { height: 220px; }
+.h-260 { height: 260px; }
+.h-280 { height: 280px; }
+.h-320 { height: 320px; }

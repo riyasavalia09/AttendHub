@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | AttendHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard_glass.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ui_glass_overlay.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-academic fixed-top">
+        <div class="container-fluid">
+            <button class="btn me-3" id="menu-toggle" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-clipboard-check me-2"></i>AttendHub
+            </a>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item me-2">
+                        <button class="btn btn-sm btn-action" id="themeToggle" type="button" aria-pressed="false">
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                    <li id="notificationsNavItem" class="nav-item dropdown me-3">
+                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell fs-5"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 300px;">
+                            <li><h6 class="dropdown-header">Notifications</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="px-3 py-2 text-muted small">No notifications</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item me-3 d-flex align-items-center">
+                        <a href="/admin/university-profile" class="d-flex align-items-center text-decoration-none">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px; background: rgba(57,214,200,0.12); border: 1px solid rgba(57,214,200,0.25);">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <strong id="navbarAdminName">Admin</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-action" id="logoutBtn" type="button">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">Main Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="/admin/dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/admin/university-profile" class="list-group-item list-group-item-action">
+                    <i class="fas fa-school"></i> University Profile
+                </a>
+                <a href="/admin/faculty" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chalkboard-teacher"></i> Faculty Management
+                </a>
+                <a href="/admin/students" class="list-group-item list-group-item-action">
+                    <i class="fas fa-user-graduate"></i> Student Management
+                </a>
+                <a href="/admin/timetable" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-alt"></i> Timetable Management
+                </a>
+                <a href="/admin/analysis" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-column"></i> Analysis
+                </a>
+                <div class="sidebar-heading mt-3">Settings</div>
+                <a href="/admin/plan" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tags"></i> Plan & Subscription
+                </a>
+                <a href="/admin/system-config" class="list-group-item list-group-item-action">
+                    <i class="fas fa-cogs"></i> System Configuration
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="mini-profile">
+                    <div class="who">
+                        <div class="avatar" aria-hidden="true"><i class="fas fa-user-shield"></i></div>
+                        <div class="meta">
+                            <div class="name" id="sidebarAdminName">Admin</div>
+                            <div class="role">Administrator</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-action" id="sidebarLogoutBtn" type="button" aria-label="Logout">
+                        <i class="fas fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                
+                <!-- Action Bar -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="h4 mb-0 fw-bold">Reports</h2>
+                        <p class="mb-0 small" style="color: var(--muted);">Generate and view attendance records</p>
+                    </div>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="row g-4">
+                    
+                    <!-- Filter Parameters -->
+                    <div class="col-12">
+                        <div class="card-academic p-4 mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="p-2 rounded me-3" style="background: rgba(57,214,200,0.12); border: 1px solid rgba(57,214,200,0.25); color: var(--text-0);">
+                                    <i class="fas fa-filter fa-lg"></i>
+                                </div>
+                                <h5 class="fw-bold mb-0">Report Criteria</h5>
+                            </div>
+                            
+                            <form id="reportFilterForm" novalidate>
+                                <div class="row g-3 d-flex align-items-end">
+                                    <div class="col-md-4">
+                                        <label for="deptSelect" class="form-label text-muted fw-bold small">Department</label>
+                                        <select class="form-select" id="deptSelect">
+                                            <option value="" selected disabled>Select Department...</option>
+                                            <option value="All">All Departments</option>
+                                            <option value="CS">Computer Science</option>
+                                            <option value="EC">Electronics</option>
+                                            <option value="ME">Mechanical</option>
+                                            <option value="CV">Civil</option>
+                                        </select>
+                                        <div class="text-danger small mt-1 error-msg" id="deptError"></div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="startDate" class="form-label text-muted fw-bold small">Start Date</label>
+                                        <input type="date" class="form-control" id="startDate">
+                                        <div class="text-danger small mt-1 error-msg" id="startError"></div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="endDate" class="form-label text-muted fw-bold small">End Date</label>
+                                        <input type="date" class="form-control" id="endDate">
+                                        <div class="text-danger small mt-1 error-msg" id="endError"></div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-primary btn-ctl w-100 fw-bold">
+                                            <i class="fas fa-file-export me-2"></i>Generate
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Reports List -->
+                    <div class="col-12">
+                        <div class="card-academic p-0 overflow-hidden">
+                            <div class="card-academic-header">
+                                <h6 class="mb-0 fw-bold">Recent Reports</h6>
+                                <button class="btn btn-sm btn-action" type="button">
+                                    <i class="fas fa-history me-1"></i> View Archives
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-academic mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="ps-4">Report Type</th>
+                                            <th>Generated By</th>
+                                            <th>Coverage Period</th>
+                                            <th>Date Generated</th>
+                                            <th class="text-end pe-4">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reportsTableBody"></tbody>
+                                </table>
+                            </div>
+                            <!-- Pagination -->
+                            <div class="d-flex justify-content-end p-3" style="border-top: var(--glass-border); background: transparent;">
+                                <ul class="pagination pagination-sm mb-0">
+                                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='JS/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/glass_ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/admin_layout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/logout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/admin_reports.js') }}"></script>
+
+    <script>
+        (function(){
+            var btn = document.getElementById('sidebarLogoutBtn');
+            var topBtn = document.getElementById('logoutBtn');
+            if (btn && topBtn) btn.addEventListener('click', function(){ topBtn.click(); });
+            var navName = document.getElementById('navbarAdminName');
+            var sideName = document.getElementById('sidebarAdminName');
+            if (navName && sideName) sideName.textContent = navName.textContent || 'Admin';
+        })();
+    </script>
+</body>
+</html>

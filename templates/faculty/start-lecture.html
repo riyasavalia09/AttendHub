@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Lecture | AttendHub Faculty</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard_glass.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ui_glass_overlay.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-academic fixed-top">
+        <div class="container-fluid">
+            <button class="btn me-3" id="menu-toggle" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chalkboard-teacher me-2"></i>AttendHub Faculty
+            </a>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item me-2">
+                        <button class="btn btn-sm btn-action" id="themeToggle" type="button" aria-pressed="false">
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item dropdown me-3" id="notificationsNavItem">
+                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell text-white fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 300px;">
+                            <li><h6 class="dropdown-header"><i class="fas fa-info-circle text-info me-2"></i>Notifications</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">
+                                <small class="text-muted">Attendance report for "Data Structures" is due by Friday.</small>
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item me-3 d-flex align-items-center">
+                        <a href="/faculty/profile" class="d-flex align-items-center text-decoration-none">
+                            <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                                <span id="navbarFacultyInitials" class="small fw-bold text-dark">F</span>
+                            </div>
+                            <strong id="navbarFacultyName">Faculty</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-action logout-action" type="button">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">Faculty Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="/faculty/dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/faculty/schedule" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-check"></i> My Schedule
+                </a>
+                <a href="/faculty/mark-attendance" class="list-group-item list-group-item-action">
+                    <i class="fas fa-user-check"></i> Take Attendance
+                </a>
+                <a href="/faculty/students" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users"></i> Student List
+                </a>
+                <a href="/faculty/reports" class="list-group-item list-group-item-action">
+                    <i class="fas fa-history"></i> Attendance History
+                </a>
+                <a href="/faculty/analysis" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-column"></i> Analysis
+                </a>
+                <div class="sidebar-heading mt-3">Account</div>
+                <a href="/faculty/profile" class="list-group-item list-group-item-action">
+                    <i class="fas fa-user-circle"></i> My Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid p-4">
+                
+                <!-- Page Title -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="text-white">
+                        <h2 class="h4 mb-0 fw-bold">Start Lecture</h2>
+                        <p class="mb-0 small opacity-75">Initiate today's session</p>
+                    </div>
+                </div>
+
+                <!-- Lecture Content -->
+                <div class="row d-flex justify-content-center" id="lectureCardContainer">
+                    <div class="col-md-6">
+                        <div class="card-academic p-5 text-center h-100">
+                             
+                             <div class="mb-4">
+                                <span id="statusBadge" class="badge bg-warning text-dark px-3 py-2 rounded-pill">
+                                    <i class="fas fa-clock me-1"></i> Not Started
+                                </span>
+                             </div>
+
+                             <h3 id="subjectName" class="display-6 fw-bold text-primary mb-2">Loading...</h3>
+                             <!-- <p class="h5 text-muted mb-4">Lecture Hall 102</p> Optional: Not in timetable currently -->
+
+                             <div class="alert alert-light border d-inline-block px-4 py-2 mb-5">
+                                <i class="far fa-clock me-2"></i><span id="lectureTime">--:-- - --:--</span>
+                             </div>
+
+                             <div class="d-grid gap-2 col-8 mx-auto">
+                                <button id="startLectureBtn" class="btn btn-primary btn-lg p-3 shadow-sm rounded-pill">
+                                    <i class="fas fa-play me-2"></i><strong>Start Lecture Session</strong>
+                                </button>
+                             </div>
+                             
+                             <p class="text-muted small mt-4 mb-0">
+                                This will enable student check-ins for this session.
+                             </p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='JS/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/glass_ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/logout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/faculty_layout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/start_lecture.js') }}"></script>
+</body>
+</html>

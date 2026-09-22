@@ -1,0 +1,350 @@
+/* Refined Glassmorphism Design System (Faculty + Student)
+   - Dark/light theme via [data-theme]
+   - Uses existing layout IDs (#wrapper, #sidebar-wrapper, #page-content-wrapper)
+*/
+
+:root {
+    /* Typography */
+    --font-body: "Recursive", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-display: "Fraunces", ui-serif, Georgia, serif;
+
+    /* Spacing */
+    --page-pad: 1.5rem;
+    --page-pad-lg: 2rem;
+    --section-gap: 3rem;
+
+    /* Shell */
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 72px;
+    --topbar-height: 56px;
+
+    /* Glass tokens (spec) */
+    --glass-blur: 12px;
+    --glass-panel-radius: 16px;
+    --glass-card-radius: 14px;
+    --glass-control-radius: 12px;
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --glass-bg-a: rgba(255, 255, 255, 0.04);
+    --glass-bg-b: rgba(255, 255, 255, 0.02);
+    --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    /* Theme (dark default) */
+    --bg-0: #0b1220;
+    --bg-1: #111c33;
+    --bg-2: #0c172a;
+
+    --text-0: rgba(255, 255, 255, 0.92);
+    --text-1: rgba(255, 255, 255, 0.74);
+    --text-2: rgba(255, 255, 255, 0.58);
+
+    /* One dominant accent + semantic roles */
+    --primary: #58a6ff;
+    --primary-rgb: 88, 166, 255;
+
+    --success: #2fbf71;
+    --success-rgb: 47, 191, 113;
+
+    --warning: #f6c177;
+    --warning-rgb: 246, 193, 119;
+
+    --danger: #ff6b6b;
+    --danger-rgb: 255, 107, 107;
+
+    --info: #63d2ff;
+    --info-rgb: 99, 210, 255;
+
+    color-scheme: dark;
+}
+
+html[data-theme="light"] {
+    --bg-0: #f5f7fb;
+    --bg-1: #eef2f8;
+    --bg-2: #ffffff;
+
+    --text-0: rgba(12, 20, 36, 0.92);
+    --text-1: rgba(12, 20, 36, 0.72);
+    --text-2: rgba(12, 20, 36, 0.56);
+
+    --glass-border: rgba(12, 20, 36, 0.08);
+    --glass-bg-a: rgba(255, 255, 255, 0.70);
+    --glass-bg-b: rgba(255, 255, 255, 0.46);
+
+    color-scheme: light;
+}
+
+body {
+    font-family: var(--font-body);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.00)),
+        linear-gradient(135deg, var(--bg-1), var(--bg-0));
+    color: var(--text-0);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Subtle geometric depth (no orbs, no rotation) */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 46px 46px;
+    opacity: 0.22;
+}
+
+#wrapper {
+    display: flex;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* Topbar */
+.navbar-academic {
+    height: var(--topbar-height);
+    border-bottom: 1px solid var(--glass-border);
+    background: linear-gradient(135deg, var(--glass-bg-a), var(--glass-bg-b));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+}
+
+.navbar-academic .navbar-brand {
+    font-family: var(--font-display);
+    letter-spacing: 0.2px;
+}
+
+/* Theme toggle button */
+#themeToggle {
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: var(--glass-control-radius);
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-0);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#themeToggle:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Sidebar */
+#sidebar-wrapper {
+    width: var(--sidebar-width);
+    min-height: calc(100vh - var(--topbar-height));
+    position: fixed;
+    top: var(--topbar-height);
+    left: 0;
+    overflow-y: auto;
+    border-right: 1px solid var(--glass-border);
+    background: linear-gradient(135deg, var(--glass-bg-a), var(--glass-bg-b));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: calc(-1 * var(--sidebar-width));
+}
+
+#page-content-wrapper {
+    width: 100%;
+    padding-top: var(--topbar-height);
+    padding-left: var(--sidebar-width);
+    min-height: 100vh;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    padding-left: 0;
+}
+
+/* Spacing */
+#page-content-wrapper .container-fluid {
+    padding: var(--page-pad);
+}
+
+@media (min-width: 992px) {
+    #page-content-wrapper .container-fluid {
+        padding: var(--page-pad-lg);
+    }
+}
+
+/* Page fade-in */
+.page-fade {
+    animation: page-fade 220ms ease-out both;
+}
+
+@keyframes page-fade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sidebar headings + nav */
+.sidebar-heading {
+    padding: 1.25rem 1.25rem 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-2);
+    font-weight: 700;
+}
+
+.list-group-item {
+    border: 0;
+    padding: 0.9rem 1.25rem;
+    background: transparent;
+    color: var(--text-1);
+    font-weight: 550;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.list-group-item i {
+    width: 22px;
+    margin-right: 10px;
+    color: rgba(var(--primary-rgb), 0.86);
+}
+
+.list-group-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateX(4px);
+    color: var(--text-0);
+}
+
+.list-group-item.active {
+    background: rgba(var(--primary-rgb), 0.14);
+    color: var(--text-0);
+    border-left: 3px solid rgba(var(--primary-rgb), 0.60);
+}
+
+/* Glass panels / cards */
+.card-academic {
+    border-radius: var(--glass-card-radius);
+    border: 1px solid var(--glass-border);
+    background: linear-gradient(135deg, var(--glass-bg-a), var(--glass-bg-b));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-academic:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.10);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.16);
+}
+
+.stat-card {
+    border-left: 3px solid rgba(var(--primary-rgb), 0.60);
+}
+
+.card-academic-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--text-0);
+    font-weight: 750;
+    letter-spacing: 0.2px;
+}
+
+/* Buttons + inputs */
+.btn,
+.form-control,
+.form-select {
+    border-radius: var(--glass-control-radius) !important;
+    min-height: 44px;
+}
+
+.form-control,
+.form-select {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: var(--text-0) !important;
+}
+
+.form-control::placeholder {
+    color: var(--text-2);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: rgba(var(--primary-rgb), 0.60) !important;
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15) !important;
+}
+
+.btn-primary {
+    background: rgba(var(--primary-rgb), 0.20) !important;
+    border: 1px solid rgba(var(--primary-rgb), 0.40) !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    background: rgba(var(--primary-rgb), 0.26) !important;
+}
+
+.btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* Badges */
+.badge {
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+/* Tables */
+.table {
+    color: var(--text-0);
+}
+
+.table thead th {
+    text-transform: uppercase;
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    color: var(--text-2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.table td,
+.table th {
+    padding: 1rem 1.25rem;
+}
+
+/* Dropdowns */
+.dropdown-menu {
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: linear-gradient(135deg, rgba(17, 28, 51, 0.92), rgba(11, 18, 32, 0.92));
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--glass-shadow);
+}
+
+html[data-theme="light"] .dropdown-menu {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(245, 247, 251, 0.92));
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+    }
+}

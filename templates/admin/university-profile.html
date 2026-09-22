@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Profile | AttendHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard_glass.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ui_glass_overlay.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-academic fixed-top">
+        <div class="container-fluid">
+            <button class="btn me-3" id="menu-toggle" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-clipboard-check me-2"></i>AttendHub
+            </a>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item me-2">
+                        <button class="btn btn-sm btn-action" id="themeToggle" type="button" aria-pressed="false">
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                    <li id="notificationsNavItem" class="nav-item dropdown me-3">
+                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell fs-5"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 300px;">
+                            <li><h6 class="dropdown-header">Notifications</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="px-3 py-2 text-muted small">No notifications</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item me-3 d-flex align-items-center">
+                        <a href="/admin/university-profile" class="d-flex align-items-center text-decoration-none">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px; background: rgba(57,214,200,0.12); border: 1px solid rgba(57,214,200,0.25);">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <strong id="navbarAdminName">Admin</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-action" id="logoutBtn" type="button">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">Main Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="/admin/dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/admin/university-profile" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-school"></i> University Profile
+                </a>
+                <a href="/admin/faculty" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chalkboard-teacher"></i> Faculty Management
+                </a>
+                <a href="/admin/students" class="list-group-item list-group-item-action">
+                    <i class="fas fa-user-graduate"></i> Student Management
+                </a>
+                <a href="/admin/timetable" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-alt"></i> Timetable Management
+                </a>
+                <a href="/admin/analysis" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-column"></i> Analysis
+                </a>
+                <div class="sidebar-heading mt-3">Settings</div>
+                <a href="/admin/plan" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tags"></i> Plan & Subscription
+                </a>
+                <a href="/admin/system-config" class="list-group-item list-group-item-action">
+                    <i class="fas fa-cogs"></i> System Configuration
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="mini-profile">
+                    <div class="who">
+                        <div class="avatar" aria-hidden="true"><i class="fas fa-user-shield"></i></div>
+                        <div class="meta">
+                            <div class="name" id="sidebarAdminName">Admin</div>
+                            <div class="role">Administrator</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-action" id="sidebarLogoutBtn" type="button" aria-label="Logout">
+                        <i class="fas fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                
+                <!-- Page Title Area -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="h4 mb-0 fw-bold">University Profile</h2>
+                        <p class="mb-0 small" style="color: var(--muted);">Manage university details and administrative contact information</p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Left Column: University Details Form -->
+                    <div class="col-lg-8">
+                        <div class="card-academic p-4 h-100">
+                            <div class="card-academic-header" style="padding: 0 0 1rem 0; border-bottom: var(--glass-border); margin-bottom: 1.25rem;">
+                                <h5 class="mb-0 fw-bold"><i class="fas fa-university me-2" style="color: var(--primary);"></i>Institution Details</h5>
+                                <div>
+                                    <span id="systemStatusBadge" class="badge bg-success me-1"><i class="fas fa-check-circle me-1"></i>System Active</span>
+                                    <span id="planBadge" class="badge bg-info"><i class="fas fa-star me-1"></i>Free License</span>
+                                </div>
+                            </div>
+
+                            <form id="universityProfileForm">
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label fw-bold small" style="color: var(--muted);">University Name</label>
+                                    <div class="col-sm-9">
+                                        <input id="uniNameInput" type="text" class="form-control" value="">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label fw-bold small" style="color: var(--muted);">University ID</label>
+                                    <div class="col-sm-9">
+                                        <input id="uniIdInput" type="text" readonly class="form-control font-monospace" value="">
+                                    </div>
+                                </div>
+                                <hr class="my-4 opacity-25">
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small" style="color: var(--muted);">Registered Address</label>
+                                    <textarea id="registeredAddressInput" class="form-control" rows="3" placeholder="Enter registered address"></textarea>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold small" style="color: var(--muted);">Official Contact Email</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-envelope text-muted"></i></span>
+                                            <input id="contactEmailInput" type="email" class="form-control" value="" placeholder="contact@example.edu">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold small" style="color: var(--muted);">Official Contact Phone</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-phone text-muted"></i></span>
+                                            <input id="contactPhoneInput" type="tel" class="form-control" value="" placeholder="+91 98xxxxxx">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <label class="form-label fw-bold small" style="color: var(--muted);">Website URL</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-globe text-muted"></i></span>
+                                            <input id="websiteUrlInput" type="url" class="form-control" value="" placeholder="https://youruniversity.edu">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end pt-2">
+                                    <button id="saveUniversityProfileBtn" type="button" class="btn btn-primary px-4 fw-bold">
+                                        <i class="fas fa-save me-2"></i>Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Admin Profile Card -->
+                    <div class="col-lg-4">
+                        <div class="card-academic p-4 mb-4">
+                            <h5 class="border-bottom pb-3 mb-4 fw-bold" style="border-bottom: var(--glass-border) !important;"><i class="fas fa-user-shield me-2" style="color: var(--primary);"></i>Admin Profile</h5>
+                            
+                            <div class="text-center mb-4">
+                                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; font-size: 2rem; background: rgba(57,214,200,0.12); border: 1px solid rgba(57,214,200,0.25); color: var(--text-0);">
+                                    <span id="adminInitials">--</span>
+                                </div>
+                                <h5 id="adminNameText" class="fw-bold mb-1">Admin</h5>
+                                <p id="adminRoleText" class="text-muted small mb-0">System Administrator</p>
+                            </div>
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span class="text-muted small">Status</span>
+                                    <span id="adminStatusBadge" class="badge bg-success rounded-pill">Active</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span class="text-muted small">Role</span>
+                                    <span id="adminRoleValue" class="fw-semibold small">Admin</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span class="text-muted small">Email</span>
+                                    <span id="adminEmailText" class="fw-semibold small">—</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-bottom-0">
+                                    <span class="text-muted small">Account Created</span>
+                                    <span id="adminCreatedText" class="fw-semibold small">—</span>
+                                </li>
+                            </ul>
+                            
+                            <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-action btn-sm" id="changePasswordBtn" type="button">
+                                    <i class="fas fa-key me-1"></i> Change Password
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-academic p-4">
+                            <h6 class="fw-bold mb-3 small text-uppercase text-muted">System Info</h6>
+                            <div class="d-flex justify-content-between mb-2">
+                                <small class="text-muted">Version</small>
+                                <small class="fw-bold">v2.4.0 (Beta)</small>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <small class="text-muted">Database</small>
+                                <small class="fw-bold text-success">Connected</small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted">Last Backup</small>
+                                <small class="fw-bold">Today, 04:00 AM</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Shared API helper -->
+    <script src="/static/JS/api.js"></script>
+
+    <!-- Shared glass UI (theme, sidebar, toasts) -->
+    <script src="/static/JS/glass_ui.js"></script>
+
+    <!-- Shared layout bindings -->
+    <script src="/static/JS/admin_layout.js"></script>
+
+    <!-- Logout wiring -->
+    <script src="/static/JS/logout.js"></script>
+
+    <!-- Page script -->
+    <script src="/static/JS/university_profile.js"></script>
+
+    <!-- Password change wiring -->
+    <script src="/static/JS/change_password.js"></script>
+
+    <script>
+        (function(){
+            var btn = document.getElementById('sidebarLogoutBtn');
+            var topBtn = document.getElementById('logoutBtn');
+            if (btn && topBtn) btn.addEventListener('click', function(){ topBtn.click(); });
+            var navName = document.getElementById('navbarAdminName');
+            var sideName = document.getElementById('sidebarAdminName');
+            if (navName && sideName) sideName.textContent = navName.textContent || 'Admin';
+        })();
+    </script>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold mb-0"><i class="fas fa-key me-2" style="color: var(--primary);"></i>Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Current password</label>
+                        <input type="password" class="form-control" id="cpCurrentPassword" placeholder="Enter current password">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">New password</label>
+                        <input type="password" class="form-control" id="cpNewPassword" placeholder="Enter new password">
+                        <div class="form-text">Minimum 6 characters.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Confirm new password</label>
+                        <input type="password" class="form-control" id="cpConfirmPassword" placeholder="Confirm new password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="cpSubmitBtn">Update Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

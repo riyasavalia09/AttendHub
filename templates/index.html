@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AttendHub | University Grade System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard_glass.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ui_glass_overlay.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-clipboard-check me-2"></i>AttendHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#plans">Plans</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-bs-toggle="dropdown">
+                            Login
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/admin/login"><i class="fas fa-user-shield me-2"></i>Admin Login</a></li>
+                            <li><a class="dropdown-item" href="/faculty/login"><i class="fas fa-chalkboard-teacher me-2"></i>Faculty Login</a></li>
+                            <li><a class="dropdown-item" href="/student/login"><i class="fas fa-user-graduate me-2"></i>Student Login</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-8 mx-auto text-center text-white">
+                    <h1 class="display-3 fw-bold mb-4">Attendance Redefined for Modern Universities</h1>
+                    <p class="lead mb-5">Beyond traditional roll calls. Experience intelligent, automated attendance tracking that's secure, seamless, and built for the digital age.</p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="/admin/signup" class="btn btn-primary btn-lg px-5 py-3">
+                            <i class="fas fa-user-plus me-2"></i>Admin Signup
+                        </a>
+                        <a href="/faculty/login" class="btn btn-outline-light btn-lg px-5 py-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Faculty Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Solution Section -->
+    <section class="py-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-6 mb-4 d-flex">
+                    <div class="problem-box p-4 w-100 h-100">
+                        <h2 class="fw-bold mb-4"><i class="fas fa-exclamation-triangle text-danger me-3"></i>Problems with Manual Attendance</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="fas fa-times-circle text-danger me-2"></i>Proxy attendance and manipulation</li>
+                            <li class="mb-3"><i class="fas fa-times-circle text-danger me-2"></i>Time-consuming manual processes</li>
+                            <li class="mb-3"><i class="fas fa-times-circle text-danger me-2"></i>Inconsistent record keeping</li>
+                            <li class="mb-3"><i class="fas fa-times-circle text-danger me-2"></i>Difficulty in generating reports</li>
+                            <li class="mb-3"><i class="fas fa-times-circle text-danger me-2"></i>Lack of centralized control</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4 d-flex">
+                    <div class="solution-box p-4 w-100 h-100">
+                        <h2 class="fw-bold mb-4"><i class="fas fa-check-circle text-success me-3"></i>Our Solution</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i>Timetable-driven attendance system</li>
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i>Role-based access control</li>
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i>Centralized database management</li>
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i>Automated attendance records</li>
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i>Real-time reporting capabilities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-5">
+        <div class="container py-5">
+            <h2 class="text-center fw-bold mb-5 text-white display-5">How It Works</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 text-center shadow-lg">
+                        <div class="card-body p-4">
+                            <div class="step-number mb-3">1</div>
+                            <i class="fas fa-university fa-3x mb-3" style="color: #6CB1DA;"></i>
+                            <h4 class="fw-bold mb-3">Admin Registration</h4>
+                            <p class="text-muted">University admin registers the institution and configures the complete timetable with courses, faculty assignments, and class schedules.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center shadow-lg">
+                        <div class="card-body p-4">
+                            <div class="step-number mb-3">2</div>
+                            <i class="fas fa-chalkboard-teacher fa-3x mb-3" style="color: #6CB1DA;"></i>
+                            <h4 class="fw-bold mb-3">Faculty Marks Attendance</h4>
+                            <p class="text-muted">Faculty conducts lectures according to timetable and marks student attendance in real-time through the system interface.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center shadow-lg">
+                        <div class="card-body p-4">
+                            <div class="step-number mb-3">3</div>
+                            <i class="fas fa-database fa-3x mb-3" style="color: #6CB1DA;"></i>
+                            <h4 class="fw-bold mb-3">Records & Reports</h4>
+                            <p class="text-muted">Attendance data is securely stored in the database. Generate comprehensive reports and track student attendance patterns.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container py-5">
+            <h2 class="text-center fw-bold mb-5 display-5">Core Features</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <i class="fas fa-calendar-alt fa-2x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">Timetable-Based Control</h5>
+                            <p class="text-muted">Attendance is synchronized with institutional timetable ensuring lectures are tracked according to schedule.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <i class="fas fa-users-cog fa-2x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">Role-Based Access</h5>
+                            <p class="text-muted">Separate access levels for Admin, Faculty, and Students with appropriate permissions and capabilities.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <i class="fas fa-shield-alt fa-2x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">Proxy Prevention</h5>
+                            <p class="text-muted">Built-in logic to prevent proxy attendance and ensure accurate attendance marking.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <i class="fas fa-file-alt fa-2x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">Attendance Records</h5>
+                            <p class="text-muted">Complete digital records of attendance stored securely in centralized database for easy access.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <i class="fas fa-chart-bar fa-2x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">Reports & Analytics</h5>
+                            <p class="text-muted">Generate detailed attendance reports with analytics for students, courses, and time periods.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <i class="fas fa-bell fa-2x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">Alerts <span class="badge bg-secondary">Future Scope</span></h5>
+                            <p class="text-muted">Planned feature for automated notifications to students and parents regarding attendance status.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section id="plans" class="py-5">
+        <div class="container py-5">
+            <h2 class="text-center fw-bold mb-3 text-white display-5">Plans</h2>
+            <p class="text-center text-white mb-5"><em>Note: Payment integration is NOT implemented. This is for UI demonstration only.</em></p>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card h-100 shadow-lg">
+                        <div class="card-body p-5 text-center">
+                            <h3 class="fw-bold mb-3">Free (Academic)</h3>
+                            <div class="display-4 fw-bold mb-4" style="color: #6CB1DA;">₹0</div>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Basic attendance marking</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Up to 3 courses</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Simple reports</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Single faculty access</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Basic timetable management</li>
+                            </ul>
+                            <button class="btn btn-outline-primary w-100 py-2" disabled>For Academic Use</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <div class="card h-100 shadow-lg border-primary" style="border-width: 3px;">
+                        <div class="card-body p-5 text-center">
+                            <h3 class="fw-bold mb-3">Premium (University)</h3>
+                            <div class="display-4 fw-bold mb-4" style="color: #6CB1DA;">₹999<small class="fs-6 text-muted">/month</small></div>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Unlimited courses</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Multiple faculty accounts</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Advanced analytics</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Custom reports</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i>Priority support</li>
+                            </ul>
+                            <button class="btn btn-primary w-100 py-2" disabled>Coming Soon</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Users Section -->
+    <section class="py-5">
+        <div class="container py-5">
+            <h2 class="text-center fw-bold mb-5 display-5">Target Users</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 text-center shadow-sm">
+                        <div class="card-body p-4">
+                            <i class="fas fa-user-shield fa-4x mb-3" style="color: #6CB1DA;"></i>
+                            <h4 class="fw-bold mb-3">University Admin</h4>
+                            <p class="text-muted">Manages university registration, timetable configuration, faculty assignments, and oversees the entire attendance system.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center shadow-sm">
+                        <div class="card-body p-4">
+                            <i class="fas fa-chalkboard-teacher fa-4x mb-3" style="color: #6CB1DA;"></i>
+                            <h4 class="fw-bold mb-3">Faculty</h4>
+                            <p class="text-muted">Conducts lectures and marks student attendance in real-time. Views attendance reports for assigned courses.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center shadow-sm">
+                        <div class="card-body p-4">
+                            <i class="fas fa-user-graduate fa-4x mb-3" style="color: #6CB1DA;"></i>
+                            <h4 class="fw-bold mb-3">Students</h4>
+                            <p class="text-muted">Views personal attendance records, tracks attendance percentage, and receives updates on attendance status.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="py-5">
+        <div class="container py-5">
+            <h2 class="text-center fw-bold mb-5 text-white display-5">Technology Stack</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center shadow-lg">
+                        <div class="card-body p-4">
+                            <i class="fab fa-python fa-4x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">Python (Flask)</h5>
+                            <p class="text-muted">Backend framework for building robust APIs and handling business logic efficiently.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center shadow-lg">
+                        <div class="card-body p-4">
+                            <i class="fas fa-database fa-4x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">MySQL</h5>
+                            <p class="text-muted">Relational database for structured data storage with ACID compliance and reliability.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center shadow-lg">
+                        <div class="card-body p-4">
+                            <i class="fab fa-bootstrap fa-4x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">Bootstrap 5</h5>
+                            <p class="text-muted">Frontend framework for responsive, mobile-first design with clean UI components.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center shadow-lg">
+                        <div class="card-body p-4">
+                            <i class="fas fa-code fa-4x mb-3" style="color: #6CB1DA;"></i>
+                            <h5 class="fw-bold mb-3">OOPS & DS</h5>
+                            <p class="text-muted">Object-oriented programming principles and data structures for clean, maintainable code.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="section-title">About AttendHub</h2>
+                <p class="text-muted">Revolutionizing attendance management for modern universities</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="about-card h-100">
+                        <div class="card-body p-4">
+                            <div class="icon-box mb-3">
+                                <i class="fas fa-bullseye fa-3x"></i>
+                            </div>
+                            <h3 class="h4 mb-3">Our Mission</h3>
+                            <p class="text-muted mb-0">
+                                To transform attendance management in educational institutions by providing a secure, 
+                                efficient, and user-friendly system that eliminates proxy attendance and streamlines 
+                                the entire process for administrators, faculty, and students alike.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="about-card h-100">
+                        <div class="card-body p-4">
+                            <div class="icon-box mb-3">
+                                <i class="fas fa-eye fa-3x"></i>
+                            </div>
+                            <h3 class="h4 mb-3">Our Vision</h3>
+                            <p class="text-muted mb-0">
+                                To become the leading attendance management solution for universities worldwide, 
+                                setting new standards for accuracy, security, and ease of use while promoting 
+                                academic integrity and improving educational outcomes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="about-card">
+                        <div class="card-body p-5">
+                            <h3 class="h4 mb-4 text-center">Why Choose Us?</h3>
+                            <div class="row g-4">
+                                <div class="col-md-3 text-center">
+                                    <div class="feature-icon mb-3">
+                                        <i class="fas fa-shield-alt fa-3x"></i>
+                                    </div>
+                                    <h5>Secure</h5>
+                                    <p class="text-muted small">Multi-level authentication and proxy prevention</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="feature-icon mb-3">
+                                        <i class="fas fa-clock fa-3x"></i>
+                                    </div>
+                                    <h5>Time-Saving</h5>
+                                    <p class="text-muted small">Automated timetable-based tracking</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="feature-icon mb-3">
+                                        <i class="fas fa-chart-line fa-3x"></i>
+                                    </div>
+                                    <h5>Analytics</h5>
+                                    <p class="text-muted small">Real-time reports and insights</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="feature-icon mb-3">
+                                        <i class="fas fa-users fa-3x"></i>
+                                    </div>
+                                    <h5>Role-Based</h5>
+                                    <p class="text-muted small">Customized access for all users</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="about-stats">
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-4">
+                                <div class="stat-item">
+                                    <h2 class="display-4 fw-bold mb-2">500+</h2>
+                                    <p class="mb-0 text-muted">Universities</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="stat-item">
+                                    <h2 class="display-4 fw-bold mb-2">10K+</h2>
+                                    <p class="mb-0 text-muted">Faculty Members</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="stat-item">
+                                    <h2 class="display-4 fw-bold mb-2">100K+</h2>
+                                    <p class="mb-0 text-muted">Students</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="stat-item">
+                                    <h2 class="display-4 fw-bold mb-2">99.9%</h2>
+                                    <p class="mb-0 text-muted">Uptime</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center mb-5">
+                        <h2 class="section-title text-white">Contact Us</h2>
+                        <p class="text-white-50">Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+                    </div>
+                    
+                    <div class="card shadow-lg border-0">
+                        <div class="card-body p-4 p-md-5">
+                            <form id="contactForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="contactName" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="contactName" placeholder="Your Name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="contactEmail" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="contactEmail" placeholder="your@email.com" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="contactSubject" class="form-label">Subject</label>
+                                    <input type="text" class="form-control" id="contactSubject" placeholder="How can we help?" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="contactMessage" class="form-label">Message</label>
+                                    <textarea class="form-control" id="contactMessage" rows="5" placeholder="Your message..." required></textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Message
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5 text-white">
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="contact-info">
+                                <i class="fas fa-envelope fa-2x mb-3"></i>
+                                <h5>Email</h5>
+                                <p>support@attendance.edu</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="contact-info">
+                                <i class="fas fa-phone fa-2x mb-3"></i>
+                                <h5>Phone</h5>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="contact-info">
+                                <i class="fas fa-map-marker-alt fa-2x mb-3"></i>
+                                <h5>Address</h5>
+                                <p>University Campus, Building A</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="mb-2 text-muted">&copy; 2024 AttendHub - Academic & Internship Project</p>
+                    <p class="mb-0 text-muted"><small>This is an educational project developed for university evaluation. Not a commercial product.</small></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='JS/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --font-ui: "Recursive", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+    --font-display: "Fraunces", ui-serif, Georgia, serif;
+
+    /* Match dashboard_glass.css key tokens */
+    --bg-0: #070A10;
+    --bg-1: #0B1423;
+    --text-0: rgba(255,255,255,0.92);
+    --text-1: rgba(255,255,255,0.78);
+    --muted: rgba(255,255,255,0.58);
+    --primary: #39D6C8;
+    --primary-2: #1FB7AA;
+    --info: #6AA7FF;
+
+    /* Glass (align with dashboard_glass.css) */
+    --glass-bg: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    --glass-border: 1px solid rgba(255,255,255,0.06);
+    --glass-border-strong: 1px solid rgba(255,255,255,0.10);
+    --glass-ctl: rgba(255,255,255,0.05);
+    --glass-ctl-border: 1px solid rgba(255,255,255,0.08);
+    --focus-ring: 0 0 0 4px rgba(57,214,200,0.15);
+
+    /* Shadows/radii (fallbacks; dashboards define these too) */
+    --r-card: 14px;
+    --sh-glass: 0 8px 24px rgba(0,0,0,0.12);
+    --sh-glass-hover: 0 12px 32px rgba(0,0,0,0.16);
+}
+
+body {
+    font-family: var(--font-ui);
+    color: var(--text-0);
+    background-color: var(--bg-0);
+    background-image:
+        radial-gradient(900px 700px at 12% 10%, rgba(57,214,200,0.16), transparent 60%),
+        radial-gradient(700px 520px at 90% 22%, rgba(106,167,255,0.13), transparent 62%),
+        radial-gradient(900px 700px at 55% 110%, rgba(240,184,107,0.08), transparent 55%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-0));
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Align Bootstrap helper text colors with the glass theme */
+.text-muted{
+    color: var(--muted) !important;
+}
+
+.display-1, .display-2, .display-3, .display-4, .display-5, .display-6,
+h1, h2, h3, h4, h5, h6,
+.auth-title{
+    font-family: var(--font-display);
+}
+
+/* Navbar Styles */
+.navbar {
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+    padding: 1rem 0;
+}
+
+/* Inset + rounded fixed navbar (landing/auth pages) */
+#mainNavbar.navbar.fixed-top{
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    width: auto;
+    border-radius: 18px;
+}
+
+@media (min-width: 992px){
+    #mainNavbar.navbar.fixed-top{
+        top: 18px;
+        left: 20px;
+        right: 20px;
+        border-radius: 20px;
+    }
+}
+
+.navbar.transparent {
+    background-color: transparent !important;
+}
+
+.navbar.solid {
+    background-color: rgba(20, 30, 48, 0.45) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 8px 28px 0 rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-brand {
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem !important;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+.nav-link.active {
+    color: var(--primary) !important;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.dropdown-menu {
+    background: var(--glass-bg);
+    border: var(--glass-border-strong);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    padding: 0.65rem 0.85rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 10px;
+    color: var(--text-1);
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255,255,255,0.06);
+    color: var(--text-0);
+}
+
+/* About Section */
+#about {
+    background: transparent;
+}
+
+.about-card {
+    background: var(--glass-bg);
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.about-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(53, 87, 125, 0.2);
+}
+
+.icon-box i {
+    color: var(--info);
+}
+
+.feature-icon i {
+    color: var(--primary);
+}
+
+.about-stats {
+    background: linear-gradient(135deg, var(--primary), var(--info));
+    padding: 3rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item h2 {
+    color: #ffffff;
+}
+
+.stat-item p {
+    color: #ffffff !important;
+}
+
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    padding-top: 80px;
+}
+
+.hero-section h1 {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-section .lead {
+    font-size: 1.25rem;
+    opacity: 0.95;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-2);
+    border-color: var(--primary-2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(57, 214, 200, 0.25);
+}
+
+.btn-outline-light:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Cards */
+.card {
+    /* Override Bootstrap defaults (prevents white cards) */
+    --bs-card-bg: transparent;
+    --bs-card-border-color: transparent;
+
+    background: var(--glass-bg);
+    background-color: transparent;
+    border: var(--glass-border);
+    border-radius: var(--r-card);
+    box-shadow: var(--sh-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: var(--text-0);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sh-glass-hover) !important;
+}
+
+/* Bootstrap helper shadows can fight the glass look; normalize */
+.shadow-sm{
+    box-shadow: var(--sh-glass) !important;
+}
+
+.shadow-sm:hover{
+    box-shadow: var(--sh-glass-hover) !important;
+}
+
+.shadow-lg{
+    box-shadow: var(--sh-glass) !important;
+}
+
+.shadow-lg:hover{
+    box-shadow: var(--sh-glass-hover) !important;
+}
+
+/* Step Numbers */
+.step-number {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), rgba(106,167,255,0.28));
+    color: rgba(7,10,16,0.92);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Problem/Solution Boxes */
+.problem-box, .solution-box {
+    border-radius: 12px;
+    background: var(--glass-bg);
+    border: var(--glass-border);
+    border-left: 5px solid #dc3545;
+    transition: transform 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.problem-box h2, .solution-box h2{
+    line-height: 1.15;
+    /* Reserve space for 2 lines so both columns align */
+    min-height: 2.3em;
+}
+
+.problem-box ul, .solution-box ul{
+    margin-bottom: 0;
+}
+
+.solution-box {
+    border-left-color: #28a745;
+}
+
+.problem-box:hover, .solution-box:hover {
+    transform: translateX(10px);
+}
+
+/* Feature Cards */
+.feature-card {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    border-color: #6CB1DA;
+}
+
+/* Glassmorphism for Auth Pages */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-card .form-control {
+    background: var(--glass-ctl);
+    border: var(--glass-ctl-border);
+    color: var(--text-0);
+    transition: all 0.3s ease;
+}
+
+.glass-card .form-control::placeholder {
+    color: var(--muted);
+}
+
+.glass-card .form-select{
+    background-color: var(--glass-ctl);
+    border: var(--glass-ctl-border);
+    color: var(--text-0);
+}
+
+.glass-card .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: var(--focus-ring);
+}
+
+/* Auth Page Specific */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px 40px;
+}
+
+.auth-card {
+    max-width: 480px;
+    width: 100%;
+}
+
+.auth-title {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Form Validation */
+.error-message {
+    color: #ff6b6b;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.form-control.error {
+    border-color: #ff6b6b;
+}
+
+.form-control.success {
+    border-color: #51cf66;
+}
+
+/* Contact Section */
+#contact {
+    background: linear-gradient(135deg, rgba(11, 20, 35, 0.95), rgba(7, 10, 16, 0.95));
+}
+
+.contact-info {
+    padding: 1.5rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.contact-info:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.contact-info i {
+    color: var(--primary);
+}
+
+#contactForm .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(57, 214, 200, 0.18);
+}
+
+#contactForm .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--info));
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#contactForm .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(57, 214, 200, 0.22);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-section .lead {
+        font-size: 1rem;
+    }
+    
+    .display-5 {
+        font-size: 2rem;
+    }
+}
+
+/* Landing footer: match dashboard glass palette */
+footer{
+    background: var(--glass-bg);
+    border-top: var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}

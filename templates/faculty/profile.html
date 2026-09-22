@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | AttendHub Faculty</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard_glass.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ui_glass_overlay.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-academic fixed-top">
+        <div class="container-fluid">
+            <button class="btn me-3" id="menu-toggle" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chalkboard-teacher me-2"></i>AttendHub Faculty
+            </a>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item me-2">
+                        <button class="btn btn-sm btn-action" id="themeToggle" type="button" aria-pressed="false">
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item dropdown me-3" id="notificationsNavItem">
+                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 300px;">
+                            <li><h6 class="dropdown-header"><i class="fas fa-info-circle text-info me-2"></i>Notifications</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">
+                                <small class="text-muted">Attendance report for "Data Structures" is due by Friday.</small>
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item me-3 d-flex align-items-center">
+                        <a href="/faculty/profile" class="d-flex align-items-center text-decoration-none">
+                            <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                                <span id="navbarFacultyInitials" class="small fw-bold text-dark">F</span>
+                            </div>
+                            <strong id="navbarFacultyName">Faculty</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-action" id="logoutBtn" type="button">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">Faculty Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="/faculty/dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/faculty/schedule" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-check"></i> My Schedule
+                </a>
+                <a href="/faculty/mark-attendance" class="list-group-item list-group-item-action">
+                    <i class="fas fa-user-check"></i> Take Attendance
+                </a>
+                <a href="/faculty/students" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users"></i> Student List
+                </a>
+                <a href="/faculty/reports" class="list-group-item list-group-item-action">
+                    <i class="fas fa-history"></i> Attendance History
+                </a>
+                <a href="/faculty/analysis" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-column"></i> Analysis
+                </a>
+                <div class="sidebar-heading mt-3">Account</div>
+                <a href="/faculty/profile" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-user-circle"></i> My Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid p-4">
+                
+                <!-- Page Title -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="text-white">
+                        <h2 class="h4 mb-0 fw-bold">My Profile</h2>
+                        <p class="mb-0 small opacity-75">View and manage your account details</p>
+                    </div>
+                </div>
+
+                <!-- Profile Content -->
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="card-academic p-4">
+                            <div class="d-flex align-items-center mb-4 border-bottom pb-4">
+                                <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-4" style="width: 80px; height: 80px; font-size: 2.5rem;">
+                                    <i class="fas fa-user-tie text-dark"></i>
+                                </div>
+                                <div>
+                                    <h3 class="h4 mb-1" id="profileName">—</h3>
+                                    <span class="badge bg-secondary" id="profileStatus">—</span>
+                                </div>
+                            </div>
+                            
+                            <form>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small text-uppercase">Faculty ID</label>
+                                        <input type="text" class="form-control" id="profileFacultyId" value="" readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small text-uppercase">Department</label>
+                                        <input type="text" class="form-control" id="profileDepartment" value="" readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small text-uppercase">Email Address</label>
+                                        <input type="email" class="form-control" id="profileEmail" value="" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end pt-2 border-top">
+                                    <button type="button" class="btn btn-outline-primary" id="changePasswordBtn">
+                                        <i class="fas fa-key me-2"></i>Change Password
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='JS/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/glass_ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/logout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/faculty_layout.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/faculty_profile.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/change_password.js') }}"></script>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold mb-0"><i class="fas fa-key me-2 text-primary"></i>Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Current password</label>
+                        <input type="password" class="form-control" id="cpCurrentPassword" placeholder="Enter current password">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">New password</label>
+                        <input type="password" class="form-control" id="cpNewPassword" placeholder="Enter new password">
+                        <div class="form-text">Minimum 6 characters.</div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Confirm new password</label>
+                        <input type="password" class="form-control" id="cpConfirmPassword" placeholder="Confirm new password">
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="cpSubmitBtn">Update Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
