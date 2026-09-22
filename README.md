@@ -114,41 +114,19 @@ Protected routes and role-specific functionality prevent users from accessing fe
 
 AttendHub uses a layered architecture to separate responsibilities.
 
-┌─────────────────────────────────────────────┐
-│                 Frontend                    │
-│        HTML • CSS • JavaScript              │
-│               Bootstrap                     │
-└──────────────────────┬──────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────┐
-│              Flask Application               │
-│                  app.py                     │
-└──────────────────────┬──────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────┐
-│               Controllers                   │
-│       Request Handling & API Routes         │
-└──────────────────────┬──────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────┐
-│                 Services                    │
-│             Business Logic                 │
-└──────────────────────┬──────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────┐
-│               Repositories                  │
-│             Database Access                │
-└──────────────────────┬──────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────┐
-│                   MySQL                    │
-│               Relational DB                │
-└─────────────────────────────────────────────┘
+flowchart TD
+    A[Frontend<br/>HTML • CSS • JavaScript • Bootstrap]
+    B[Flask Application<br/>app.py]
+    C[Controllers<br/>Request Handling & API Routes]
+    D[Services<br/>Business Logic]
+    E[Repositories<br/>Database Access]
+    F[MySQL<br/>Relational Database]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
 
 Why this architecture?
 
@@ -167,7 +145,6 @@ This reduces coupling and makes individual modules easier to maintain and test.
 ##  Project Structure
 
 AttendHub/
-│
 ├── app.py
 ├── config.py
 ├── db_connection.py
@@ -176,58 +153,21 @@ AttendHub/
 ├── .gitignore
 ├── README.md
 │
-├── db.sql
-├── seed_data.py
-│
 ├── controllers/
 │   ├── admin.py
 │   ├── auth.py
-│   ├── base_controller.py
 │   ├── faculty.py
-│   └── student.py
+│   ├── student.py
+│   └── ...
 │
 ├── services/
-│   ├── admin.py
-│   ├── analytics.py
-│   ├── attendance.py
-│   ├── auth.py
-│   ├── authorization.py
-│   ├── faculty.py
-│   ├── lecture.py
-│   ├── session.py
-│   ├── student.py
-│   └── timetable.py
-│
 ├── repositories/
-│   ├── admin_repository.py
-│   ├── attendance_repository.py
-│   ├── faculty_repository.py
-│   ├── lecture_repository.py
-│   ├── password_reset_repository.py
-│   ├── report_repository.py
-│   ├── student_repository.py
-│   ├── timetable_repository.py
-│   └── university_repository.py
-│
 ├── models/
-├── exceptions/
-│
 ├── data_structures/
-│   ├── linked_list.py
-│   ├── queue.py
-│   └── stack.py
-│
+├── exceptions/
 ├── templates/
-│   ├── index.html
-│   ├── forgot-password.html
-│   ├── admin/
-│   ├── faculty/
-│   └── student/
-│
-└── static/
-    ├── CSS/
-    └── JS/
-
+├── static/
+└── db.sql
 ---
 
 ## Technology Stack
